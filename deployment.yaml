@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-service-deployment
+  labels:
+    app: go-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: go-service
+  template:
+    metadata:
+      labels:
+        app: go-service
+    spec:
+      containers:
+      - name: go-service
+        image: my-go-service
+        imagePullPolicy: Never #三个选择Always、Never、IfNotPresent，每次启动时检查和更新（从registery）images的策略， 
+                           # Always，每次都检查 
+                           # Never，每次都不检查（不管本地是否有） 
+                           # IfNotPresent，如果本地有就不检查，如果没有就拉取
+        ports:
+        - containerPort: 8088
+        resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
